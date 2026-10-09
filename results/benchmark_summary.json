@@ -1,0 +1,47 @@
+{
+  "A_fedavg": {
+    "accuracy_mean": 0.91875,
+    "f1_mean": 0.9186689803059478,
+    "bw_reduction_pct_mean": 14.000194250194253
+  },
+  "B_fedprox": {
+    "accuracy_mean": 0.91875,
+    "f1_mean": 0.9186689803059478,
+    "bw_reduction_pct_mean": 14.000194250194253
+  },
+  "C_oort": {
+    "accuracy_mean": 0.8640625,
+    "f1_mean": 0.86286613482776,
+    "bw_reduction_pct_mean": 16.000349650349655
+  },
+  "D_no_drift_detection": {
+    "accuracy_mean": 0.923046875,
+    "f1_mean": 0.9233355319963463,
+    "bw_reduction_pct_mean": 73.02097902097901
+  },
+  "E_no_transience_classifier": {
+    "accuracy_mean": 0.980078125,
+    "f1_mean": 0.9800143050188204,
+    "bw_reduction_pct_mean": 72.13434452871073
+  },
+  "F_no_selective_transmission": {
+    "accuracy_mean": 0.9796875,
+    "f1_mean": 0.9796117767224862,
+    "bw_reduction_pct_mean": 72.55655142979087
+  },
+  "G_no_episode_memory": {
+    "accuracy_mean": 0.9796875,
+    "f1_mean": 0.9796117767224862,
+    "bw_reduction_pct_mean": 72.55655142979087
+  },
+  "H_no_fsm": {
+    "accuracy_mean": 0.978125,
+    "f1_mean": 0.9780885211753907,
+    "bw_reduction_pct_mean": 73.18986178141107
+  },
+  "I_full_driftgate": {
+    "accuracy_mean": 0.980078125,
+    "f1_mean": 0.9800143050188204,
+    "bw_reduction_pct_mean": 72.55655142979087
+  }
+}

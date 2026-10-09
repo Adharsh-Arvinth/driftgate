@@ -1,0 +1,3172 @@
+{
+  "config": {
+    "data": {
+      "dataset": "synthetic",
+      "num_clients": 10,
+      "dirichlet_alpha": 0.5,
+      "time_steps": 128,
+      "n_features": 32,
+      "n_classes": 6,
+      "samples_per_client_per_round": 128,
+      "seed": 42,
+      "data_dir": "./data",
+      "train_fraction": 0.8
+    },
+    "drift": {
+      "drift_scenario": "mixed",
+      "drifting_client_fraction": 0.5,
+      "global_drift_round": 15,
+      "drift_severity": 0.8,
+      "transient_drift_duration": 5,
+      "persistent_drift_duration": 0,
+      "recurring_period": 20,
+      "seed": 43
+    },
+    "model": {
+      "model_type": "mlp",
+      "hidden_dims": [
+        128,
+        64
+      ],
+      "dropout": 0.2,
+      "layer_groups": {
+        "base": [
+          0,
+          1
+        ],
+        "head": [
+          2,
+          3
+        ]
+      },
+      "layer_divergence_threshold": 0.3
+    },
+    "detector": {
+      "method": "ensemble",
+      "window_size": 30,
+      "adwin_delta": 0.002,
+      "ph_threshold": 2.5,
+      "ph_alpha": 0.01,
+      "transient_window": 4,
+      "persistence_threshold": 0.6,
+      "divergence_threshold": 0.15,
+      "wasserstein_threshold": 0.2
+    },
+    "fsm": {
+      "classification_wait_rounds": 3,
+      "transient_suppression_rounds": 4,
+      "recovery_accuracy_threshold": 0.7,
+      "max_adapting_rounds": 8,
+      "min_persistent_selective_rounds": 2
+    },
+    "comm": {
+      "budget_fraction": 0.6,
+      "compression_method": "topk",
+      "topk_fraction": 0.3,
+      "quantization_bits": 8,
+      "transient_suppress_transmission": true,
+      "persistent_selective_transmission": true,
+      "bytes_per_float": 4
+    },
+    "aggregation": {
+      "base_method": "episode_weighted",
+      "episode_memory_depth": 5,
+      "episode_recency_decay": 0.7,
+      "fedprox_mu": 0.01,
+      "selective_layer_aggregation": true,
+      "min_weight_floor": 0.05
+    },
+    "selection": {
+      "clients_per_round": 5,
+      "strategy": "driftgate",
+      "weight_stable": 0.4,
+      "weight_persistent": 0.5,
+      "weight_adapting": 0.3,
+      "weight_transient": 0.0,
+      "weight_eligible": 0.4,
+      "pow_d": 2,
+      "oort_util_weight": 0.5,
+      "seed": 44
+    },
+    "training": {
+      "num_rounds": 40,
+      "local_epochs": 3,
+      "local_lr": 0.01,
+      "momentum": 0.9,
+      "weight_decay": 0.0001,
+      "batch_size": 32,
+      "server_optimizer": "sgd",
+      "server_lr": 1.0
+    },
+    "experiment": {
+      "name": "driftgate_full",
+      "seeds": [
+        42
+      ],
+      "baselines": [
+        "fedavg",
+        "fedprox",
+        "feddrift",
+        "flare_sim",
+        "driftgate"
+      ],
+      "ablations": [
+        "no_drift_detection",
+        "no_transience_classifier",
+        "no_selective_transmission",
+        "no_episode_memory",
+        "no_fsm",
+        "full_driftgate"
+      ],
+      "output_dir": "./results",
+      "save_checkpoints": true,
+      "checkpoint_every": 10
+    }
+  },
+  "round_metrics": [
+    {
+      "round": 1,
+      "accuracy": 0.46328125,
+      "f1": 0.4328572174535002,
+      "precision": 0.5739320576411246,
+      "recall": 0.46328125,
+      "n_selected": 5,
+      "selected_ids": [
+        0,
+        2,
+        9,
+        5,
+        8
+      ],
+      "round_time": 0.013221979141235352,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 1,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 104.0,
+        "normalized_weights": {
+          "0": 0.2,
+          "2": 0.2,
+          "9": 0.2,
+          "5": 0.2,
+          "8": 0.2
+        },
+        "episode_weights": {
+          "0": 1.0,
+          "2": 1.0,
+          "9": 1.0,
+          "5": 1.0,
+          "8": 1.0
+        },
+        "reliabilities": {
+          "0": 0.65,
+          "2": 0.65,
+          "9": 0.65,
+          "5": 0.65,
+          "8": 0.65
+        }
+      },
+      "avg_local_accuracy": 0.85625,
+      "avg_drift_severity": 0.0,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 2,
+      "accuracy": 0.58515625,
+      "f1": 0.5767345404148467,
+      "precision": 0.6353451995150008,
+      "recall": 0.58515625,
+      "n_selected": 5,
+      "selected_ids": [
+        0,
+        5,
+        6,
+        7,
+        8
+      ],
+      "round_time": 0.01228189468383789,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 2,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 127.61332873870846,
+        "normalized_weights": {
+          "0": 0.2175888983959033,
+          "5": 0.22920770353632253,
+          "6": 0.1629923786612332,
+          "7": 0.1629923786612332,
+          "8": 0.2272186407453078
+        },
+        "episode_weights": {
+          "0": 1.0,
+          "5": 1.0,
+          "6": 1.0,
+          "7": 1.0,
+          "8": 1.0
+        },
+        "reliabilities": {
+          "0": 0.8677263631528076,
+          "5": 0.9140611881507862,
+          "6": 0.65,
+          "7": 0.65,
+          "8": 0.9061289717810456
+        }
+      },
+      "avg_local_accuracy": 0.90625,
+      "avg_drift_severity": 0.007071765669907054,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 3,
+      "accuracy": 0.662109375,
+      "f1": 0.6512481496854321,
+      "precision": 0.6779745667882714,
+      "recall": 0.662109375,
+      "n_selected": 5,
+      "selected_ids": [
+        5,
+        8,
+        0,
+        3,
+        6
+      ],
+      "round_time": 0.012633323669433594,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 3,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 134.79129732366613,
+        "normalized_weights": {
+          "5": 0.20939097517711686,
+          "8": 0.2062326822010966,
+          "0": 0.20195436685748447,
+          "3": 0.15431263303337922,
+          "6": 0.22810934273092284
+        },
+        "episode_weights": {
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0,
+          "3": 1.0,
+          "6": 1.0
+        },
+        "reliabilities": {
+          "5": 0.8820025372497236,
+          "8": 0.8686990870132862,
+          "0": 0.8506778471531229,
+          "3": 0.65,
+          "6": 0.9608485699484337
+        }
+      },
+      "avg_local_accuracy": 0.90625,
+      "avg_drift_severity": 0.007370950216088451,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 4,
+      "accuracy": 0.717578125,
+      "f1": 0.7069209453236385,
+      "precision": 0.718203976028225,
+      "recall": 0.717578125,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        5,
+        8,
+        0,
+        4
+      ],
+      "round_time": 0.012547016143798828,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 4,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 133.30084607132753,
+        "normalized_weights": {
+          "6": 0.22452103168797966,
+          "5": 0.21327735498401762,
+          "8": 0.20588307944511128,
+          "0": 0.20028051452275772,
+          "4": 0.15603801936013365
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0,
+          "4": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9352763589004696,
+          "5": 0.8884391208507628,
+          "8": 0.8576371463063649,
+          "0": 0.8342988136713876,
+          "4": 0.65
+        }
+      },
+      "avg_local_accuracy": 0.93125,
+      "avg_drift_severity": 0.01125294851425547,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 5,
+      "accuracy": 0.7625,
+      "f1": 0.752149583557449,
+      "precision": 0.7577617414535286,
+      "recall": 0.7625,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        5,
+        8,
+        0,
+        7
+      ],
+      "round_time": 0.012761116027832031,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 5,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 143.52402369343136,
+        "normalized_weights": {
+          "6": 0.20845182493093134,
+          "5": 0.199135783894087,
+          "8": 0.1900573205715555,
+          "0": 0.18538777241436163,
+          "7": 0.21696729818906446
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0,
+          "7": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9349326456351874,
+          "5": 0.8931490301820304,
+          "8": 0.8524309806506878,
+          "0": 0.8314874700147281,
+          "7": 0.9731256139370961
+        }
+      },
+      "avg_local_accuracy": 0.9125,
+      "avg_drift_severity": 0.011279264598932958,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 6,
+      "accuracy": 0.7984375,
+      "f1": 0.7895368131021946,
+      "precision": 0.7898520871972938,
+      "recall": 0.7984375,
+      "n_selected": 5,
+      "selected_ids": [
+        7,
+        6,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.012209415435791016,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 6,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 140.9959460962253,
+        "normalized_weights": {
+          "7": 0.20884384315450677,
+          "6": 0.21073624624446002,
+          "5": 0.2017233892595486,
+          "8": 0.19096472404378817,
+          "0": 0.18773179729769648
+        },
+        "episode_weights": {
+          "7": 1.0,
+          "6": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "7": 0.9201917266231678,
+          "6": 0.9285298880001484,
+          "5": 0.8888181286995998,
+          "8": 0.8414141230487031,
+          "0": 0.8271694491354222
+        }
+      },
+      "avg_local_accuracy": 0.9375,
+      "avg_drift_severity": 0.012858427302174352,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 7,
+      "accuracy": 0.826171875,
+      "f1": 0.8182121855959131,
+      "precision": 0.8196761638411261,
+      "recall": 0.826171875,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.01275491714477539,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 7,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 139.5099395081387,
+        "normalized_weights": {
+          "6": 0.21313872816014895,
+          "7": 0.20614329751843277,
+          "5": 0.20204884035333484,
+          "8": 0.19202799758886893,
+          "0": 0.1866411363792144
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9292178460145,
+          "7": 0.8987199677126498,
+          "5": 0.8808694217307287,
+          "8": 0.8371816977341284,
+          "0": 0.813696676437327
+        }
+      },
+      "avg_local_accuracy": 0.98125,
+      "avg_drift_severity": 0.015844994547426734,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 8,
+      "accuracy": 0.8453125,
+      "f1": 0.8380501287865336,
+      "precision": 0.8414981820189681,
+      "recall": 0.8453125,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.012310028076171875,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 8,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 138.63146532801278,
+        "normalized_weights": {
+          "6": 0.21430826057302538,
+          "7": 0.207337313130683,
+          "5": 0.20031317617134192,
+          "8": 0.1918812838764454,
+          "0": 0.1861599662485042
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.928433381098003,
+          "7": 0.8982336105149877,
+          "5": 0.867803410535672,
+          "8": 0.8312744860253756,
+          "0": 0.8064884033263606
+        }
+      },
+      "avg_local_accuracy": 0.96875,
+      "avg_drift_severity": 0.016367098808307827,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 9,
+      "accuracy": 0.860546875,
+      "f1": 0.8545133847331868,
+      "precision": 0.8578142881684284,
+      "recall": 0.860546875,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.012595891952514648,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 9,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 138.06577971024083,
+        "normalized_weights": {
+          "6": 0.214343014122772,
+          "7": 0.2068514370797348,
+          "5": 0.20076356432493583,
+          "8": 0.19162971928057884,
+          "0": 0.18641226519197848
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.92479485532199,
+          "7": 0.892472029518669,
+          "5": 0.8662055639352924,
+          "8": 0.8267970815039902,
+          "0": 0.8042860856650842
+        }
+      },
+      "avg_local_accuracy": 0.98125,
+      "avg_drift_severity": 0.008459991784638988,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 10,
+      "accuracy": 0.870703125,
+      "f1": 0.8651846060056891,
+      "precision": 0.8684000912371411,
+      "recall": 0.870703125,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.012239933013916016,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 10,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 137.4605309834886,
+        "normalized_weights": {
+          "6": 0.21300193987196037,
+          "7": 0.2062577222866026,
+          "5": 0.2015387129613266,
+          "8": 0.1917624532671086,
+          "0": 0.18743917161300172
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9149799923535246,
+          "7": 0.8860092507800414,
+          "5": 0.8657380780435266,
+          "8": 0.8237427702747866,
+          "0": 0.8051715017821395
+        }
+      },
+      "avg_local_accuracy": 0.975,
+      "avg_drift_severity": 0.012746858973135305,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 11,
+      "accuracy": 0.88203125,
+      "f1": 0.8772879853356533,
+      "precision": 0.8802265578613868,
+      "recall": 0.88203125,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        5,
+        8,
+        0
+      ],
+      "round_time": 0.012935876846313477,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 11,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 143.96428252448916,
+        "normalized_weights": {
+          "6": 0.2028705252144975,
+          "7": 0.19632285882435754,
+          "5": 0.19992086559154787,
+          "8": 0.198483342700293,
+          "0": 0.20240240766930412
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "8": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9126909252459818,
+          "7": 0.8832337348064128,
+          "5": 0.8994207492675632,
+          "8": 0.892953500778437,
+          "0": 0.9105849187918915
+        }
+      },
+      "avg_local_accuracy": 0.9875,
+      "avg_drift_severity": 0.01349571208228322,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 12,
+      "accuracy": 0.8921875,
+      "f1": 0.8877785286611349,
+      "precision": 0.8910983501778903,
+      "recall": 0.8921875,
+      "n_selected": 5,
+      "selected_ids": [
+        5,
+        0,
+        7,
+        8,
+        6
+      ],
+      "round_time": 0.013335704803466797,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 12,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 145.7181235501913,
+        "normalized_weights": {
+          "5": 0.1996856525147907,
+          "0": 0.19936177336335037,
+          "7": 0.19530270240916267,
+          "8": 0.2044675483010446,
+          "6": 0.20118232341165176
+        },
+        "episode_weights": {
+          "5": 1.0,
+          "0": 1.0,
+          "7": 1.0,
+          "8": 1.0,
+          "6": 1.0
+        },
+        "reliabilities": {
+          "5": 0.9093068307609637,
+          "0": 0.9078319850670602,
+          "7": 0.8893482287295191,
+          "8": 0.9310821082917602,
+          "6": 0.9161222080941755
+        }
+      },
+      "avg_local_accuracy": 0.98125,
+      "avg_drift_severity": 0.01342547526259993,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 13,
+      "accuracy": 0.905078125,
+      "f1": 0.9016188561052054,
+      "precision": 0.904539241013406,
+      "recall": 0.905078125,
+      "n_selected": 5,
+      "selected_ids": [
+        8,
+        6,
+        5,
+        0,
+        7
+      ],
+      "round_time": 0.012318849563598633,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 13,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 146.18027896650048,
+        "normalized_weights": {
+          "8": 0.20436835480998083,
+          "6": 0.20485141764263837,
+          "5": 0.19806716272881608,
+          "0": 0.1979063922149254,
+          "7": 0.1948066726036394
+        },
+        "episode_weights": {
+          "8": 1.0,
+          "6": 1.0,
+          "5": 1.0,
+          "0": 1.0,
+          "7": 1.0
+        },
+        "reliabilities": {
+          "8": 0.9335819724389921,
+          "6": 0.9357886680526242,
+          "5": 0.9047972844312994,
+          "0": 0.904062863225983,
+          "7": 0.8899029295542417
+        }
+      },
+      "avg_local_accuracy": 0.9875,
+      "avg_drift_severity": 0.010861589640381246,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 14,
+      "accuracy": 0.912109375,
+      "f1": 0.9092075481488097,
+      "precision": 0.9118101961255126,
+      "recall": 0.912109375,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        8,
+        0,
+        5,
+        7
+      ],
+      "round_time": 0.012815237045288086,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 14,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 147.54511021388873,
+        "normalized_weights": {
+          "6": 0.20313370768499953,
+          "8": 0.20420379533307031,
+          "0": 0.19458230157798057,
+          "5": 0.19912034618656307,
+          "7": 0.19895984921738652
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "8": 1.0,
+          "0": 1.0,
+          "5": 1.0,
+          "7": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9366057902668472,
+          "8": 0.9415397340160074,
+          "0": 0.8971770978748524,
+          "5": 0.918101044497629,
+          "7": 0.9173610275286868
+        }
+      },
+      "avg_local_accuracy": 0.98125,
+      "avg_drift_severity": 0.011274860538793039,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 15,
+      "accuracy": 0.923046875,
+      "f1": 0.9207212433704143,
+      "precision": 0.9228814853277141,
+      "recall": 0.923046875,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        8,
+        7,
+        5,
+        0
+      ],
+      "round_time": 0.0124664306640625,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 15,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 149.75507546669076,
+        "normalized_weights": {
+          "6": 0.19866917093787584,
+          "8": 0.2045292259193369,
+          "7": 0.20151226087710705,
+          "5": 0.20078269702377147,
+          "0": 0.19450664524190864
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "8": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9297411464595775,
+          "8": 0.9571653019591919,
+          "7": 0.9430463698473326,
+          "5": 0.9396321232875188,
+          "0": 0.9102611667804649
+        }
+      },
+      "avg_local_accuracy": 0.98125,
+      "avg_drift_severity": 0.013970928159194807,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 16,
+      "accuracy": 0.92890625,
+      "f1": 0.9269331939796267,
+      "precision": 0.928880918380035,
+      "recall": 0.92890625,
+      "n_selected": 5,
+      "selected_ids": [
+        8,
+        7,
+        5,
+        6,
+        0
+      ],
+      "round_time": 0.013025999069213867,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 10,
+        "drifting": 0,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 16,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 150.6105925672512,
+        "normalized_weights": {
+          "8": 0.2033005664077472,
+          "7": 0.20041660287075433,
+          "5": 0.20181036375580316,
+          "6": 0.199016829054776,
+          "0": 0.19545563791091924
+        },
+        "episode_weights": {
+          "8": 1.0,
+          "7": 1.0,
+          "5": 1.0,
+          "6": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "8": 0.956850586747769,
+          "7": 0.9432769787087427,
+          "5": 0.9498368272335633,
+          "6": 0.9366888298373482,
+          "0": 0.919927795199176
+        }
+      },
+      "avg_local_accuracy": 0.99375,
+      "avg_drift_severity": 0.0129092622208461,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 17,
+      "accuracy": 0.939453125,
+      "f1": 0.9381545641547369,
+      "precision": 0.9394650202253283,
+      "recall": 0.939453125,
+      "n_selected": 5,
+      "selected_ids": [
+        7,
+        8,
+        5,
+        6,
+        0
+      ],
+      "round_time": 0.01228189468383789,
+      "n_clients_reporting": 5,
+      "n_active": 4,
+      "state_counts": {
+        "stable": 9,
+        "drifting": 1,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 17,
+        "total_params_sent": 15432,
+        "total_bytes_sent": 61728,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7601864801864802,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 4,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 4,
+        "total_weight": 120.72162926054881,
+        "normalized_weights": {
+          "7": 0.2505452952264381,
+          "8": 0.25709896581034575,
+          "6": 0.24824614861567687,
+          "0": 0.24410959034753935
+        },
+        "episode_weights": {
+          "7": 1.0,
+          "8": 1.0,
+          "6": 1.0,
+          "0": 1.0
+        },
+        "reliabilities": {
+          "7": 0.9451948826031502,
+          "8": 0.9699189385570961,
+          "6": 0.9365212349544014,
+          "0": 0.9209158582775028
+        }
+      },
+      "avg_local_accuracy": 0.975,
+      "avg_drift_severity": 0.060371846207936807,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 0
+      }
+    },
+    {
+      "round": 18,
+      "accuracy": 0.9421875,
+      "f1": 0.9410444337508939,
+      "precision": 0.9428466733569586,
+      "recall": 0.9421875,
+      "n_selected": 5,
+      "selected_ids": [
+        8,
+        7,
+        0,
+        6,
+        3
+      ],
+      "round_time": 0.015047550201416016,
+      "n_clients_reporting": 5,
+      "n_active": 4,
+      "state_counts": {
+        "stable": 8,
+        "drifting": 2,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 18,
+        "total_params_sent": 15432,
+        "total_bytes_sent": 61728,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7601864801864802,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 4,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 4,
+        "total_weight": 120.81715168425042,
+        "normalized_weights": {
+          "8": 0.2564568096422805,
+          "7": 0.2510975409355926,
+          "0": 0.24354706675110271,
+          "6": 0.24889858267102416
+        },
+        "episode_weights": {
+          "8": 1.0,
+          "7": 1.0,
+          "0": 1.0,
+          "6": 1.0
+        },
+        "reliabilities": {
+          "8": 0.9682619147190732,
+          "7": 0.9480278028361804,
+          "0": 0.91952071581007,
+          "6": 0.9397255567675021
+        }
+      },
+      "avg_local_accuracy": 0.9,
+      "avg_drift_severity": 0.020156087485359804,
+      "sel_diag": {
+        "n_eligible": 9,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 1
+      }
+    },
+    {
+      "round": 19,
+      "accuracy": 0.94765625,
+      "f1": 0.9468057168586897,
+      "precision": 0.948045308140229,
+      "recall": 0.94765625,
+      "n_selected": 5,
+      "selected_ids": [
+        8,
+        7,
+        6,
+        0,
+        9
+      ],
+      "round_time": 0.016639232635498047,
+      "n_clients_reporting": 5,
+      "n_active": 4,
+      "state_counts": {
+        "stable": 7,
+        "drifting": 3,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 19,
+        "total_params_sent": 15432,
+        "total_bytes_sent": 61728,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7601864801864802,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 4,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 4,
+        "total_weight": 116.3293347968683,
+        "normalized_weights": {
+          "7": 0.2604118101117387,
+          "6": 0.2604738928313191,
+          "0": 0.25445591317737687,
+          "9": 0.22465838387956527
+        },
+        "episode_weights": {
+          "7": 1.0,
+          "6": 1.0,
+          "0": 1.0,
+          "9": 1.0
+        },
+        "reliabilities": {
+          "7": 0.9466728951108421,
+          "6": 0.9468985839068161,
+          "0": 0.9250214723454351,
+          "9": 0.8166987610390408
+        }
+      },
+      "avg_local_accuracy": 0.9125,
+      "avg_drift_severity": 0.07979908894348575,
+      "sel_diag": {
+        "n_eligible": 8,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 2
+      }
+    },
+    {
+      "round": 20,
+      "accuracy": 0.951171875,
+      "f1": 0.950461248571175,
+      "precision": 0.9514501610149688,
+      "recall": 0.951171875,
+      "n_selected": 5,
+      "selected_ids": [
+        7,
+        6,
+        0,
+        9,
+        2
+      ],
+      "round_time": 0.01561284065246582,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 7,
+        "drifting": 3,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 20,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 139.97758376263957,
+        "normalized_weights": {
+          "7": 0.21359483915195077,
+          "6": 0.21601002155095525,
+          "0": 0.21462603812600417,
+          "9": 0.1780108858979672,
+          "2": 0.1777582152731227
+        },
+        "episode_weights": {
+          "7": 1.0,
+          "6": 1.0,
+          "0": 1.0,
+          "9": 1.0,
+          "2": 1.0
+        },
+        "reliabilities": {
+          "7": 0.934327796520616,
+          "6": 0.9448925276630755,
+          "0": 0.9388385696695695,
+          "9": 0.7786729278576369,
+          "2": 0.777567670871589
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.011657183562536736,
+      "sel_diag": {
+        "n_eligible": 7,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 3
+      }
+    },
+    {
+      "round": 21,
+      "accuracy": 0.95546875,
+      "f1": 0.9548866855579116,
+      "precision": 0.9560114079256467,
+      "recall": 0.95546875,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        0,
+        7,
+        2,
+        9
+      ],
+      "round_time": 0.017477035522460938,
+      "n_clients_reporting": 5,
+      "n_active": 5,
+      "state_counts": {
+        "stable": 7,
+        "drifting": 3,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 21,
+        "total_params_sent": 19290,
+        "total_bytes_sent": 77160,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 5,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 5,
+        "total_weight": 138.07094785009744,
+        "normalized_weights": {
+          "6": 0.22011518983702733,
+          "0": 0.2177050886497665,
+          "7": 0.21625597199508556,
+          "2": 0.16711327493574749,
+          "9": 0.17881047458237304
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "0": 1.0,
+          "7": 1.0,
+          "2": 1.0,
+          "9": 1.0
+        },
+        "reliabilities": {
+          "6": 0.949734778031328,
+          "0": 0.939335873176961,
+          "7": 0.9330833447376747,
+          "2": 0.7210465083972684,
+          "9": 0.7715166159723126
+        }
+      },
+      "avg_local_accuracy": 0.9875,
+      "avg_drift_severity": 0.008597977133251332,
+      "sel_diag": {
+        "n_eligible": 7,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 3
+      }
+    },
+    {
+      "round": 22,
+      "accuracy": 0.958984375,
+      "f1": 0.9585501016868502,
+      "precision": 0.9594585546818399,
+      "recall": 0.958984375,
+      "n_selected": 5,
+      "selected_ids": [
+        6,
+        7,
+        0,
+        9,
+        2
+      ],
+      "round_time": 0.019222497940063477,
+      "n_clients_reporting": 5,
+      "n_active": 3,
+      "state_counts": {
+        "stable": 5,
+        "drifting": 5,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 22,
+        "total_params_sent": 11574,
+        "total_bytes_sent": 46296,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.8201398601398602,
+        "n_suppressed": 2,
+        "n_selective": 0,
+        "n_full": 3,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 3,
+        "total_weight": 77.28476931453281,
+        "normalized_weights": {
+          "6": 0.39140193844181687,
+          "9": 0.31977056821837463,
+          "2": 0.28882749333980834
+        },
+        "episode_weights": {
+          "6": 1.0,
+          "9": 1.0,
+          "2": 1.0
+        },
+        "reliabilities": {
+          "6": 0.9452940163042747,
+          "9": 0.7722935811979426,
+          "2": 0.6975614435769328
+        }
+      },
+      "avg_local_accuracy": 0.8875,
+      "avg_drift_severity": 0.11272514275595709,
+      "sel_diag": {
+        "n_eligible": 7,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 3
+      }
+    },
+    {
+      "round": 23,
+      "accuracy": 0.958203125,
+      "f1": 0.957622791076731,
+      "precision": 0.9587772212938528,
+      "recall": 0.958203125,
+      "n_selected": 5,
+      "selected_ids": [
+        1,
+        2,
+        4,
+        6,
+        9
+      ],
+      "round_time": 0.02017045021057129,
+      "n_clients_reporting": 5,
+      "n_active": 4,
+      "state_counts": {
+        "stable": 4,
+        "drifting": 6,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 23,
+        "total_params_sent": 15432,
+        "total_bytes_sent": 61728,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.7601864801864802,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 4,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 4,
+        "total_weight": 97.08743966927074,
+        "normalized_weights": {
+          "1": 0.21423986533021566,
+          "2": 0.22063394934554634,
+          "6": 0.31214115071844617,
+          "9": 0.25298503460579186
+        },
+        "episode_weights": {
+          "1": 1.0,
+          "2": 1.0,
+          "6": 1.0,
+          "9": 1.0
+        },
+        "reliabilities": {
+          "1": 0.65,
+          "2": 0.6693995389399583,
+          "6": 0.9470307855835589,
+          "9": 0.7675521651411933
+        }
+      },
+      "avg_local_accuracy": 0.85625,
+      "avg_drift_severity": 0.01858711566262437,
+      "sel_diag": {
+        "n_eligible": 5,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 5
+      }
+    },
+    {
+      "round": 24,
+      "accuracy": 0.961328125,
+      "f1": 0.9608706054432756,
+      "precision": 0.9620512641736785,
+      "recall": 0.961328125,
+      "n_selected": 4,
+      "selected_ids": [
+        1,
+        2,
+        6,
+        9
+      ],
+      "round_time": 0.015022516250610352,
+      "n_clients_reporting": 4,
+      "n_active": 3,
+      "state_counts": {
+        "stable": 3,
+        "drifting": 7,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 24,
+        "total_params_sent": 11574,
+        "total_bytes_sent": 46296,
+        "baseline_params": 51480,
+        "communication_efficiency": 0.7751748251748252,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 3,
+        "n_clients": 4
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 3,
+        "total_weight": 75.5229508074288,
+        "normalized_weights": {
+          "2": 0.2781573636012468,
+          "6": 0.39898369313578746,
+          "9": 0.32285894326296566
+        },
+        "episode_weights": {
+          "2": 1.0,
+          "6": 1.0,
+          "9": 1.0
+        },
+        "reliabilities": {
+          "2": 0.6564770277494079,
+          "6": 0.9416383071768858,
+          "9": 0.7619768778058563
+        }
+      },
+      "avg_local_accuracy": 0.9921875,
+      "avg_drift_severity": 0.02972253929394573,
+      "sel_diag": {
+        "n_eligible": 4,
+        "n_selected": 4,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 6
+      }
+    },
+    {
+      "round": 25,
+      "accuracy": 0.963671875,
+      "f1": 0.9633073198500801,
+      "precision": 0.9643222830321407,
+      "recall": 0.963671875,
+      "n_selected": 3,
+      "selected_ids": [
+        2,
+        6,
+        9
+      ],
+      "round_time": 0.01407003402709961,
+      "n_clients_reporting": 3,
+      "n_active": 2,
+      "state_counts": {
+        "stable": 2,
+        "drifting": 8,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 25,
+        "total_params_sent": 7716,
+        "total_bytes_sent": 30864,
+        "baseline_params": 38610,
+        "communication_efficiency": 0.8001554001554001,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 2,
+        "n_clients": 3
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 2,
+        "total_weight": 45.20029274007223,
+        "normalized_weights": {
+          "2": 0.4610435277928235,
+          "9": 0.5389564722071766
+        },
+        "episode_weights": {
+          "2": 1.0,
+          "9": 1.0
+        },
+        "reliabilities": {
+          "2": 0.6512282006922265,
+          "9": 0.7612809474350307
+        }
+      },
+      "avg_local_accuracy": 0.9791666666666666,
+      "avg_drift_severity": 0.09600537856546983,
+      "sel_diag": {
+        "n_eligible": 3,
+        "n_selected": 3,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 7
+      }
+    },
+    {
+      "round": 26,
+      "accuracy": 0.96796875,
+      "f1": 0.9678017538615038,
+      "precision": 0.9686586418057299,
+      "recall": 0.96796875,
+      "n_selected": 2,
+      "selected_ids": [
+        2,
+        9
+      ],
+      "round_time": 0.011643171310424805,
+      "n_clients_reporting": 2,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 26,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 25740,
+        "communication_efficiency": 0.8501165501165502,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 2
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 24.383924702095136,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.761997646940473
+        }
+      },
+      "avg_local_accuracy": 0.953125,
+      "avg_drift_severity": 0.12912288186526205,
+      "sel_diag": {
+        "n_eligible": 2,
+        "n_selected": 2,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 8
+      }
+    },
+    {
+      "round": 27,
+      "accuracy": 0.97265625,
+      "f1": 0.9725569429157694,
+      "precision": 0.9729560671212069,
+      "recall": 0.97265625,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008594989776611328,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 27,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 24.53307289763329,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.7666585280510403
+        }
+      },
+      "avg_local_accuracy": 0.96875,
+      "avg_drift_severity": 0.014506496451874962,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 28,
+      "accuracy": 0.971484375,
+      "f1": 0.9713607883041817,
+      "precision": 0.9720604528604477,
+      "recall": 0.971484375,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008800506591796875,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 28,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.951578567969,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9359868302490313
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.03497701595977597,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 29,
+      "accuracy": 0.975,
+      "f1": 0.9749429113475541,
+      "precision": 0.975549965440919,
+      "recall": 0.975,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.009211063385009766,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 29,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 30.539180668952277,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9543493959047586
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.0239535803709417,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 30,
+      "accuracy": 0.974609375,
+      "f1": 0.9745772606971028,
+      "precision": 0.975353461616584,
+      "recall": 0.974609375,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.009348392486572266,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 30,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 30.372320784736168,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9491350245230052
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.015834149135477146,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 31,
+      "accuracy": 0.977734375,
+      "f1": 0.9777173669997437,
+      "precision": 0.9782200203849586,
+      "recall": 0.977734375,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008949995040893555,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 31,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 30.3426069612279,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9482064675383719
+        }
+      },
+      "avg_local_accuracy": 0.96875,
+      "avg_drift_severity": 0.020313291314979352,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 32,
+      "accuracy": 0.979296875,
+      "f1": 0.9792911517904506,
+      "precision": 0.9797345246519631,
+      "recall": 0.979296875,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008641242980957031,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 32,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 30.312913781461283,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9472785556706651
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.013019814567314393,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 33,
+      "accuracy": 0.976953125,
+      "f1": 0.9769455491519647,
+      "precision": 0.9775042863401409,
+      "recall": 0.976953125,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008867025375366211,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 33,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 30.316283341000826,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9473838544062758
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.01050015655814957,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 34,
+      "accuracy": 0.97734375,
+      "f1": 0.9773361196490654,
+      "precision": 0.9778696944189813,
+      "recall": 0.97734375,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008962392807006836,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 34,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.77493243452703,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9304666385789697
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.012588691717584111,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 35,
+      "accuracy": 0.977734375,
+      "f1": 0.9777339562494557,
+      "precision": 0.9782807919207397,
+      "recall": 0.977734375,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008751392364501953,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 35,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.727979031876032,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.928999344746126
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.017846960668094616,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 36,
+      "accuracy": 0.978515625,
+      "f1": 0.9785005227417143,
+      "precision": 0.9790332311944345,
+      "recall": 0.978515625,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008960962295532227,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 36,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.53414202287182,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9229419382147444
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.014903099928632382,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 37,
+      "accuracy": 0.97890625,
+      "f1": 0.9788779618395305,
+      "precision": 0.979386084143648,
+      "recall": 0.97890625,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.009043216705322266,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 37,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.528690742554645,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9227715857048326
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.019845133294381735,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 38,
+      "accuracy": 0.978125,
+      "f1": 0.9780885211753907,
+      "precision": 0.9786844897645948,
+      "recall": 0.978125,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.008385419845581055,
+      "n_clients_reporting": 1,
+      "n_active": 1,
+      "state_counts": {
+        "stable": 1,
+        "drifting": 9,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 38,
+        "total_params_sent": 3858,
+        "total_bytes_sent": 15432,
+        "baseline_params": 12870,
+        "communication_efficiency": 0.7002331002331003,
+        "n_suppressed": 0,
+        "n_selective": 0,
+        "n_full": 1,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 1,
+        "total_weight": 29.455161439915805,
+        "normalized_weights": {
+          "9": 1.0
+        },
+        "episode_weights": {
+          "9": 1.0
+        },
+        "reliabilities": {
+          "9": 0.9204737949973689
+        }
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.0073878485147569565,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 39,
+      "accuracy": 0.978125,
+      "f1": 0.9780885211753907,
+      "precision": 0.9786844897645948,
+      "recall": 0.978125,
+      "n_selected": 1,
+      "selected_ids": [
+        9
+      ],
+      "round_time": 0.007271766662597656,
+      "n_clients_reporting": 1,
+      "n_active": 0,
+      "state_counts": {
+        "stable": 0,
+        "drifting": 10,
+        "transient": 0,
+        "persistent": 0,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 39,
+        "total_params_sent": 0,
+        "total_bytes_sent": 0,
+        "baseline_params": 12870,
+        "communication_efficiency": 1.0,
+        "n_suppressed": 1,
+        "n_selective": 0,
+        "n_full": 0,
+        "n_clients": 1
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 0,
+        "total_weight": 0.0
+      },
+      "avg_local_accuracy": 1.0,
+      "avg_drift_severity": 0.2835995447413033,
+      "sel_diag": {
+        "n_eligible": 1,
+        "n_selected": 1,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 9
+      }
+    },
+    {
+      "round": 40,
+      "accuracy": 0.980078125,
+      "f1": 0.9800143050188204,
+      "precision": 0.9804272413055666,
+      "recall": 0.980078125,
+      "n_selected": 5,
+      "selected_ids": [
+        7,
+        8,
+        6,
+        0,
+        2
+      ],
+      "round_time": 0.01621103286743164,
+      "n_clients_reporting": 5,
+      "n_active": 3,
+      "state_counts": {
+        "stable": 0,
+        "drifting": 5,
+        "transient": 2,
+        "persistent": 3,
+        "adapting": 0,
+        "eligible": 0
+      },
+      "comm_summary": {
+        "round": 40,
+        "total_params_sent": 11574,
+        "total_bytes_sent": 46296,
+        "baseline_params": 64350,
+        "communication_efficiency": 0.8201398601398602,
+        "n_suppressed": 2,
+        "n_selective": 3,
+        "n_full": 0,
+        "n_clients": 5
+      },
+      "aggregation": {
+        "method": "episode_weighted",
+        "n_active": 3,
+        "total_weight": 45.73837549650779,
+        "normalized_weights": {
+          "8": 0.3469039142329381,
+          "6": 0.3443966139176441,
+          "2": 0.3086994718494178
+        },
+        "episode_weights": {
+          "8": 1.0,
+          "6": 1.0,
+          "2": 1.0
+        },
+        "reliabilities": {
+          "8": 0.7083402451068954,
+          "6": 0.7032206092451352,
+          "2": 0.6303309088849246
+        }
+      },
+      "avg_local_accuracy": 0.81875,
+      "avg_drift_severity": 0.140284284801502,
+      "sel_diag": {
+        "n_eligible": 10,
+        "n_selected": 5,
+        "n_transient_excluded": 0,
+        "n_drifting_excluded": 10
+      }
+    }
+  ],
+  "final_eval": {
+    "accuracy": 0.980078125,
+    "f1": 0.9800143050188204,
+    "precision": 0.9804272413055666,
+    "recall": 0.980078125
+  },
+  "comm_stats": {
+    "total_params_sent": 501540,
+    "total_bytes_sent": 2006160,
+    "total_params_baseline": 1827540,
+    "total_bytes_baseline": 7310160,
+    "bandwidth_reduction_pct": 72.55655142979087,
+    "suppressed_client_rounds": 12,
+    "selective_client_rounds": 3,
+    "full_client_rounds": 127
+  },
+  "state_history": [
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 1
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 2
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 3
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 4
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 5
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 6
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 7
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 8
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 9
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 10
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 11
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 12
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 13
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 14
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 15
+    },
+    {
+      "stable": 10,
+      "drifting": 0,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 16
+    },
+    {
+      "stable": 9,
+      "drifting": 1,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 17
+    },
+    {
+      "stable": 8,
+      "drifting": 2,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 18
+    },
+    {
+      "stable": 7,
+      "drifting": 3,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 19
+    },
+    {
+      "stable": 7,
+      "drifting": 3,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 20
+    },
+    {
+      "stable": 7,
+      "drifting": 3,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 21
+    },
+    {
+      "stable": 5,
+      "drifting": 5,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 22
+    },
+    {
+      "stable": 4,
+      "drifting": 6,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 23
+    },
+    {
+      "stable": 3,
+      "drifting": 7,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 24
+    },
+    {
+      "stable": 2,
+      "drifting": 8,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 25
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 26
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 27
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 28
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 29
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 30
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 31
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 32
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 33
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 34
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 35
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 36
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 37
+    },
+    {
+      "stable": 1,
+      "drifting": 9,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 38
+    },
+    {
+      "stable": 0,
+      "drifting": 10,
+      "transient": 0,
+      "persistent": 0,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 39
+    },
+    {
+      "stable": 0,
+      "drifting": 5,
+      "transient": 2,
+      "persistent": 3,
+      "adapting": 0,
+      "eligible": 0,
+      "round": 40
+    }
+  ],
+  "episode_summary": {
+    "total_closed_episodes": 0,
+    "currently_open_episodes": 10,
+    "episode_weights": {
+      "0": 1.0,
+      "1": 1.0,
+      "2": 1.0,
+      "3": 1.0,
+      "4": 1.0,
+      "5": 1.0,
+      "6": 1.0,
+      "7": 1.0,
+      "8": 1.0,
+      "9": 1.0
+    }
+  },
+  "client_summaries": [
+    {
+      "client_id": 0,
+      "state": "transient",
+      "rounds_in_state": 0,
+      "n_transitions": 2,
+      "transmission_mode": "none",
+      "weight_modifier": 0.0
+    },
+    {
+      "client_id": 1,
+      "state": "drifting",
+      "rounds_in_state": 16,
+      "n_transitions": 1,
+      "transmission_mode": "none",
+      "weight_modifier": 0.3
+    },
+    {
+      "client_id": 2,
+      "state": "persistent",
+      "rounds_in_state": 0,
+      "n_transitions": 2,
+      "transmission_mode": "selective",
+      "weight_modifier": 0.7
+    },
+    {
+      "client_id": 3,
+      "state": "drifting",
+      "rounds_in_state": 22,
+      "n_transitions": 1,
+      "transmission_mode": "none",
+      "weight_modifier": 0.3
+    },
+    {
+      "client_id": 4,
+      "state": "drifting",
+      "rounds_in_state": 17,
+      "n_transitions": 1,
+      "transmission_mode": "none",
+      "weight_modifier": 0.3
+    },
+    {
+      "client_id": 5,
+      "state": "drifting",
+      "rounds_in_state": 23,
+      "n_transitions": 1,
+      "transmission_mode": "none",
+      "weight_modifier": 0.3
+    },
+    {
+      "client_id": 6,
+      "state": "persistent",
+      "rounds_in_state": 0,
+      "n_transitions": 2,
+      "transmission_mode": "selective",
+      "weight_modifier": 0.7
+    },
+    {
+      "client_id": 7,
+      "state": "transient",
+      "rounds_in_state": 0,
+      "n_transitions": 2,
+      "transmission_mode": "none",
+      "weight_modifier": 0.0
+    },
+    {
+      "client_id": 8,
+      "state": "persistent",
+      "rounds_in_state": 0,
+      "n_transitions": 2,
+      "transmission_mode": "selective",
+      "weight_modifier": 0.7
+    },
+    {
+      "client_id": 9,
+      "state": "drifting",
+      "rounds_in_state": 1,
+      "n_transitions": 1,
+      "transmission_mode": "none",
+      "weight_modifier": 0.3
+    }
+  ],
+  "seed": 42,
+  "experiment_name": "driftgate_mixed"
+}

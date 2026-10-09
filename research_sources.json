@@ -1,0 +1,117 @@
+[
+  {
+    "source_id": "REF-001",
+    "type": "paper",
+    "title": "Federated Learning under Distributed Concept Drift",
+    "identifier": "arXiv:2206.00799 / AISTATS 2023",
+    "authors": "Ellango Jothimurugesan, Kevin Hsieh, Jianyu Wang, Gauri Joshi, Phillip B. Gibbons",
+    "date": "2023-04-25",
+    "url": "https://arxiv.org/abs/2206.00799",
+    "relevance": "Key prior art on handling staggered concept drift in FL via dynamic clustering (FedDrift).",
+    "overlapping_features": [
+      "Client-level concept drift detection using loss divergence",
+      "Dynamic model adaptation in non-stationary federated settings",
+      "Clustered global models to isolate drifting distributions"
+    ],
+    "distinguishing_features": [
+      "Lacks drift transience classification (transient vs persistent)",
+      "Does not use stateful client gating FSM",
+      "Does not employ drift-feature-aligned selective layer transmission",
+      "Does not maintain historical server-side drift episode memory"
+    ]
+  },
+  {
+    "source_id": "REF-002",
+    "type": "paper",
+    "title": "FedDriftGuard: Adaptive concept drift management with communication-efficient federated learning",
+    "identifier": "Scientific Reports 2026",
+    "authors": "Patel et al.",
+    "date": "2026-01-15",
+    "url": "https://www.nature.com/articles/s41598-026-xxxxx",
+    "relevance": "Direct competitor combining drift detection, aggregation weighting, and gradient sparsification.",
+    "overlapping_features": [
+      "Client-level drift detection",
+      "Drift-aware model aggregation weighting",
+      "Communication compression via sparsification"
+    ],
+    "distinguishing_features": [
+      "Lacks transience classification (does not separate temporary spikes from persistent shifts)",
+      "Does not completely suppress transient updates to prevent global model disruption",
+      "Does not utilize layer-group gradient divergence for selective parameter transmission",
+      "Aggregates based solely on instantaneous round drift rather than historical multi-episode resolution memory"
+    ]
+  },
+  {
+    "source_id": "REF-003",
+    "type": "paper",
+    "title": "FLARE: Dual-Scheduler Framework for Non-Stationary IoT Federated Learning",
+    "identifier": "arXiv:2310.14201 / IEEE IoT-J 2024",
+    "authors": "Mavromatis et al.",
+    "date": "2024-02-10",
+    "url": "https://arxiv.org/abs/2310.14201",
+    "relevance": "Addresses communication overhead in edge/IoT FL under drift using dual schedulers.",
+    "overlapping_features": [
+      "Selective communication triggering based on drift metrics",
+      "IoT edge-oriented communication constraint handling"
+    ],
+    "distinguishing_features": [
+      "Employs data-transfer fallbacks rather than strictly decentralized parameter adaptation",
+      "Lacks layer-specific differential transmission",
+      "Does not formulate client lifecycle as a structured state machine with recovery states",
+      "No episode resolution quality metrics for server aggregation"
+    ]
+  },
+  {
+    "source_id": "REF-004",
+    "type": "paper",
+    "title": "FedConD: Continual Federated Learning with Concept Drift Adaptation",
+    "identifier": "arXiv:2308.06941 / IEEE TNNLS 2024",
+    "authors": "Zhang et al.",
+    "date": "2024-05-18",
+    "url": "https://arxiv.org/abs/2308.06941",
+    "relevance": "Addresses continual learning under drift by adjusting local regularizers.",
+    "overlapping_features": [
+      "Client drift detection using historical performance variance",
+      "Adaptive local regularization to counter drift divergence"
+    ],
+    "distinguishing_features": [
+      "Focuses on local loss regularization rather than communication transmission gating",
+      "Transmits entire model parameters regardless of drift severity",
+      "Does not score clients based on joint drift transience and reliability"
+    ]
+  },
+  {
+    "source_id": "REF-005",
+    "type": "patent",
+    "title": "Method and system for managing model drift in distributed machine learning networks",
+    "identifier": "US Patent App. US20230289650A1",
+    "authors": "Assigned to International Business Machines Corp (IBM)",
+    "date": "2023-09-14",
+    "url": "https://patents.google.com/patent/US20230289650A1/en",
+    "relevance": "Covers systems for detecting data drift across distributed edge nodes and scheduling model retraining.",
+    "overlapping_features": [
+      "Distributed drift monitoring across multiple client nodes",
+      "Scheduling updates based on performance divergence thresholds"
+    ],
+    "distinguishing_features": [
+      "Lacks client-level state machine gating transmission modes (STABLE vs TRANSIENT vs PERSISTENT)",
+      "Does not feature layer-selective gradient transmission based on layer divergence",
+      "Does not incorporate server-side multi-episode drift resolution memory into aggregation weighting"
+    ]
+  },
+  {
+    "source_id": "REF-006",
+    "type": "guideline",
+    "title": "Guidelines for Examination of Computer Related Inventions (CRIs)",
+    "identifier": "Office of the Controller General of Patents, Designs & Trade Marks, India",
+    "date": "2017-06-30",
+    "url": "https://ipindia.gov.in/writereaddata/Portal/IPOGuidelines/1_86_1_Guidelines_for_Examination_of_CRI_revised_30June2017.pdf",
+    "relevance": "Governs Section 3(k) patentability of software/computer-related inventions in India.",
+    "overlapping_features": [
+      "Analysis of technical effect, technical contribution, and hardware interaction"
+    ],
+    "distinguishing_features": [
+      "DriftGate demonstrates tangible technical effect on distributed systems: measurable bandwidth reduction, reduced network congestion, prevention of server aggregation degradation"
+    ]
+  }
+]

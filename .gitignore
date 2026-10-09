@@ -1,0 +1,27 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+
+# Jupyter / Colab checkpoints
+.ipynb_checkpoints/
+
+# Raw dataset zip caches
+data/har.zip
+data/UCI HAR Dataset/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
